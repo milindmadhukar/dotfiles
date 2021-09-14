@@ -1,0 +1,100 @@
+window:
+  # Window dimensions (changes require restart)
+  #
+  # Specified in number of columns/lines, not pixels. If both are zero this
+  # setting is ignored.
+  dimensions:
+    columns: 100
+    lines: 35
+
+  # Window padding (changes require restart)
+  #
+  # Blank space added around the window in pixels. This padding is not scaled by
+  # DPI and the specified value is always added at both opposing sides.
+  padding:
+    x: 0
+    y: 0
+
+  # Spread additional padding evenly around the terminal content.
+  dynamic_padding: false
+
+# Startup Mode (changes require restart)
+  #
+  # Values for `startup_mode`:
+  #   - Windowed
+  #   - Maximized
+  #   - Fullscreen
+  #
+  startup_mode: Maximized
+
+font:
+  normal:
+    family: Hack Nerd Font
+    style: Regular
+
+  # Bold font face
+  bold:
+    family: Hack Nerd Font
+    style: Bold
+
+  # Italic font face
+  italic:
+    family: Hack Nerd Font
+    style: Italic
+
+  # Bold italic font face
+  bold_italic:
+    family: Hack Nerd Font
+    style: Bold Italic
+
+  size: 16.0
+  
+  # Glyph offset determines the locations of the glyphs within their cells with
+  # the default being at the bottom. Increase the x offset to move the glyph to
+  # the right, increase the y offset to move the glyph upward.
+  glyph_offset:
+    x: 0
+    y: 0
+
+draw_bold_text_with_bright_colors: false
+
+colors:
+  normal:
+    black:   '0xffffff'
+    red:     '0xc82829'
+    green:   '0x718c00'
+    yellow:  '0xeab700'
+    blue:    '0x4271ae'
+    magenta: '0x8959a8'
+    cyan:    '0x3e999f'
+    white:   '0x4d4d4c'
+  # Bright colors
+  bright:
+    black:   '0x8e908c'
+    red:     '0xf5871f'
+    green:   '0xe0e0e0'
+    yellow:  '0xd6d6d6'
+    blue:    '0x969896'
+    magenta: '0x282a2e'
+    cyan:    '0xa3685a'
+    white:   '0x1d1f21'
+
+bell:
+  animation: EaseOutExpo
+  color: '0xffffff'
+  duration: 0
+
+# Background opacity
+background_opacity: 0.95
+
+mouse:
+  # Click settings
+  #
+  # The `double_click` and `triple_click` settings control the time
+  # alacritty should wait for accepting multiple clicks as one double
+  # or triple click.
+  double_click: { threshold: 300 }
+  triple_click: { threshold: 300 }
+
+  # If this is `true`, the cursor is temporarily hidden when typing.
+  hide_when_typing: true

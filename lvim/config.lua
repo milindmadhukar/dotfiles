@@ -1,6 +1,5 @@
 --[[
 lvim is the global options object
-
 Linters should be
 filled in as strings with either
 a global executable or a path to
@@ -65,6 +64,11 @@ lvim.plugins = {
         }
     end,
   },
+  {"folke/tokyonight.nvim"}, {
+           "ray-x/lsp_signature.nvim",
+           config = function() require"lsp_signature".on_attach() end,
+           event = "InsertEnter"
+  }
 }
 
 -- My own config
@@ -127,18 +131,22 @@ lvim.builtin.dashboard.custom_header = {
 "       +++++++       xxxxxxx      xxxxxxx ",
 }
 
+local status = {
+  ["NORMAL"]  = "am very normal :)",
+  ["INSERT"]  = " inserting shit  ",
+  ["COMMAND"] = " i command thee  ",
+  ["VISUAL"]  = "   soo visual    ",
+  ["V-LINE"]  = "very visual line ",
+  ["REPLACE"] = " replacing stuff ",
+}
+
 lvim.builtin.lualine.sections.lualine_a = {
 {
-				"mode",
-				format = function(mode)
-                  return ({
-                    NORMAL ="am very normal :)",
-                    INSERT =" inserting shit  ",
-                    COMMAND=" i command thee  ",
-                    VISUAL ="   soo visual    ",
-                  })[mode]
-                end
-              },
+    "mode",
+    fmt = function(mode)
+          return status[mode]
+     end
+  },
 }
 
 lvim.builtin.which_key.mappings["f"] = { "<cmd>Telescope live_grep<CR>", "Find In Folder" }
@@ -154,7 +162,7 @@ vim.api.nvim_set_keymap('', '<right>', '<nop>',{ noremap = true, silent = true})
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.lint_on_save = true
-lvim.colorscheme = "spacegray"
+lvim.colorscheme = "tokyonight"
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -201,19 +209,19 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- end
 
 -- set a formatter if you want to override the default lsp one (if it exists)
--- lvim.lang.python.formatters = {
---   {
---     exe = "black",
---     args = {}
---   }
--- }
+lvim.lang.python.formatters = {
+  {
+    exe = "black",
+    args = {}
+  }
+}
 -- set an additional linter
--- lvim.lang.python.linters = {
---   {
---     exe = "flake8",
---     args = {}
---   }
--- }
+lvim.lang.python.linters = {
+  {
+    exe = "flake8",
+    args = {}
+  }
+}
 
 -- Additional Plugins
 -- lvim.plugins = {

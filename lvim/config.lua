@@ -68,7 +68,11 @@ lvim.plugins = {
            "ray-x/lsp_signature.nvim",
            config = function() require"lsp_signature".on_attach() end,
            event = "InsertEnter"
-  }
+  },
+  {
+    "folke/trouble.nvim",
+      cmd = "TroubleToggle",
+  },
 }
 
 -- My own config
@@ -117,18 +121,18 @@ vim.opt.sidescrolloff = 8
 
 lvim.builtin.nvimtree.quit_on_open = 0
 lvim.builtin.lualine.style = "default"
-
+lvim.lsp.diagnostics.virtual_text = false
 lvim.builtin.dashboard.custom_header = {
-"       +++++++       xxxxxxx      xxxxxxx ",
-"       +:::::+        x:::::x    x:::::x  ", 
-"       +:::::+         x:::::x  x:::::x   ",
-" +++++++:::::+++++++    x:::::xx:::::x    ",
-" +:::::::::::::::::+     x::::::::::x     ",
-" +:::::::::::::::::+     x::::::::::x     ",
-" +++++++:::::+++++++    x:::::xx:::::x    ",
-"       +:::::+         x:::::x  x:::::x   ",
-"       +:::::+        x:::::x    x:::::x  ",
-"       +++++++       xxxxxxx      xxxxxxx ",
+"      +++++++       xxxxxxx      xxxxxxx",
+"      +:::::+        x:::::x    x:::::x ",
+"      +:::::+         x:::::x  x:::::x  ",
+"+++++++:::::+++++++    x:::::xx:::::x   ",
+"+:::::::::::::::::+     x::::::::::x    ",
+"+:::::::::::::::::+     x::::::::::x    ",
+"+++++++:::::+++++++    x:::::xx:::::x   ",
+"      +:::::+         x:::::x  x:::::x  ",
+"      +:::::+        x:::::x    x:::::x ",
+"      +++++++       xxxxxxx      xxxxxxx",
 }
 
 local status = {
@@ -137,26 +141,78 @@ local status = {
   ["COMMAND"] = " i command thee  ",
   ["VISUAL"]  = "   soo visual    ",
   ["V-LINE"]  = "very visual line ",
+  ["V-BLOCK"] = "very visual block",
   ["REPLACE"] = " replacing stuff ",
+  ["SELECT"]  = " selecting stuff ",
 }
 
 lvim.builtin.lualine.sections.lualine_a = {
 {
     "mode",
     fmt = function(mode)
-          return status[mode]
+          local status_val = status[mode]
+          -- if status_val == nil then
+          --   return mode
+          -- end
+          return status_val
      end
   },
 }
 
+lvim.builtin.bufferline.options = {
+      numbers = "ordinal",
+      view = "multiwindow",
+      number = "superscript",
+      modified_icon = '●',
+      left_trunc_marker = '',
+      right_trunc_marker = '',
+      max_name_length = 18,
+      max_prefix_length = 25, -- prefix used when a buffer is deduplicated
+      tab_size = 20,
+      diagnostics ="nvim_lsp",
+      show_buffer_close_icons = false,
+      show_close_icon = false,
+      diagnostics_indicator = function(count, level)
+        local icon = level:match("error") and "" or ""
+        return " " .. icon .. count
+      end,
+      separator_style = "thin",
+}
+
+lvim.builtin.lualine.options.theme = "tokyonight"
+
 lvim.builtin.which_key.mappings["f"] = { "<cmd>Telescope live_grep<CR>", "Find In Folder" }
 lvim.builtin.which_key.mappings["r"] = { "<cmd>RnvimrToggle<CR>", "Ranger File Navigator" }
+
+lvim.builtin.which_key.mappings["a"] = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" }
+
+lvim.builtin.which_key.mappings["h"] = {
+  name = "Hop",
+  l = { "<cmd>HopLine<cr>", "Hop to Line" },
+  w = { "<cmd>HopWord<cr>", "Hop to Word" },
+  c = { "<cmd>HopChar1<cr>", "Hop to Character" }
+}
+
+lvim.builtin.which_key.mappings["T"] = {
+  name = "Trouble Diagnostics",
+  t = { "<cmd>TroubleToggle<cr>", "Toggle Trouble Menu" },
+  w = { "<cmd>TroubleToggle lsp_workspace_diagnostics<cr>", "Workspace" },
+  d = { "<cmd>TroubleToggle lsp_document_diagnostics<cr>", "Document" },
+  q = { "<cmd>TroubleToggle quickfix<cr>", "Show Quickfix(s)" },
+  l = { "<cmd>TroubleToggle loclist<cr>", "Loclist" },
+  r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
+}
+
+lvim.builtin.which_key.mappings["t"] = {"<cmd>TroubleToggle lsp_workspace_diagnostics<cr>", "Toggle Trouble Diagnostics" }
+
 lvim.transparent_window = true
 
 vim.api.nvim_set_keymap('', '<up>', '<nop>',{ noremap = true, silent = true})
 vim.api.nvim_set_keymap('', '<down>', '<nop>',{ noremap = true, silent = true})
 vim.api.nvim_set_keymap('', '<left>', '<nop>',{ noremap = true, silent = true})
 vim.api.nvim_set_keymap('', '<right>', '<nop>',{ noremap = true, silent = true})
+
+lvim.keys.normal_mode["gh"] = "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({ show_header = false, border = 'single' })<CR>"
 
 -- general
 lvim.log.level = "warn"
@@ -236,3 +292,4 @@ lvim.lang.python.linters = {
 -- lvim.autocommands.custom_groups = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
 -- }
+

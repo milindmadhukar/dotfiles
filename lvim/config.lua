@@ -9,6 +9,12 @@ an executable
 -- Plugins
 lvim.plugins = {
   {"fatih/vim-go"},
+  {"folke/todo-comments.nvim",
+    requires = "nvim-lua/plenary.nvim",
+    config = function()
+      require("todo-comments").setup()
+    end,
+  },
   {
     "phaazon/hop.nvim",
     event = "BufRead",
@@ -22,7 +28,8 @@ lvim.plugins = {
     config = function()
       vim.g.rnvimr_draw_border = 1
       vim.g.rnvimr_pick_enable = 1
-      vim.g.rnvimr_bw_enable = 1
+      vim.g.rnvimr_bw_enable = 10
+      -- vim.g_rnvimr_layout = { 'relative': 'editor', 'width': &columns, 'height': &lines - 2, 'col': 0, 'row': 0, 'style': 'minimal' }
       -- vim.cmd([vim.g.rnvimr_layout = { :'relative': 'editor', 'width': &columns, 'height': &lines - 2, 'col': 0, 'row': 0, 'style': 'minimal' }])
       end,
    },
@@ -101,7 +108,7 @@ vim.opt.termguicolors = true -- set term gui colors (most terminals support this
 vim.opt.timeoutlen = 100 -- time to wait for a mapped sequence to complete (in milliseconds)
 vim.opt.title = true -- set the title of window to the value of the titlestring
 vim.opt.titlestring = "%<%F%=%l/%L - LunarVim" -- what the title of the window will be set to
-vim.opt.undodir = CACHE_PATH .. "/undo" -- set an undo directory
+-- vim.opt.undodir = "~/.config/lvim/undo" -- set an undo directory
 vim.opt.undofile = true -- enable persistent undo
 vim.opt.updatetime = 300 -- faster completion
 vim.opt.writebackup = false -- if a file is being edited by another program (or was written to file while editing with another program) it is not allowed to be edited
@@ -114,14 +121,14 @@ vim.opt.relativenumber = false -- set relative numbered lines
 vim.opt.numberwidth = 4 -- set number column width to 2 {default 4}
 vim.opt.signcolumn = "yes" -- always show the sign column otherwise it would shift the text each time
 vim.opt.wrap = true -- display lines as one long line
-vim.opt.spell = false
 vim.opt.spelllang = "en"
+vim.opt.spell = false
 vim.opt.scrolloff = 8 -- is one of my fav
 vim.opt.sidescrolloff = 8
 
 lvim.builtin.nvimtree.quit_on_open = 0
 lvim.builtin.lualine.style = "default"
-lvim.lsp.diagnostics.virtual_text = false
+lvim.lsp.diagnostics.virtual_text = true
 lvim.builtin.dashboard.custom_header = {
 "      +++++++       xxxxxxx      xxxxxxx",
 "      +:::::+        x:::::x    x:::::x ",
@@ -134,6 +141,8 @@ lvim.builtin.dashboard.custom_header = {
 "      +:::::+        x:::::x    x:::::x ",
 "      +++++++       xxxxxxx      xxxxxxx",
 }
+
+lvim.builtin.dashboard.footer = {"High On Life till the day we die."}
 
 local status = {
   ["NORMAL"]  = "am very normal :)",
@@ -195,7 +204,8 @@ lvim.builtin.which_key.mappings["h"] = {
 
 lvim.builtin.which_key.mappings["T"] = {
   name = "Trouble Diagnostics",
-  t = { "<cmd>TroubleToggle<cr>", "Toggle Trouble Menu" },
+  t = { "<cmd>TodoTelescope<cr>", "Toggle Todo Telescope Menu" },
+  T = { "<cmd>TodoTrouble<cr>", "Toggle Todo Trouble Menu" },
   w = { "<cmd>TroubleToggle lsp_workspace_diagnostics<cr>", "Workspace" },
   d = { "<cmd>TroubleToggle lsp_document_diagnostics<cr>", "Document" },
   q = { "<cmd>TroubleToggle quickfix<cr>", "Show Quickfix(s)" },
@@ -241,7 +251,7 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 --   w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnosticss" },
 -- }
 
--- TODO: User Config for predefined plugins
+-- TODO
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
@@ -271,6 +281,21 @@ lvim.lang.python.formatters = {
     args = {}
   }
 }
+
+lvim.lang.html.formatters = {
+  {
+    exe = "prettier",
+    args = {}
+  }
+}
+
+lvim.lang.json.formatters = {
+  {
+    exe = "prettier",
+    args = {}
+  }
+}
+
 -- set an additional linter
 lvim.lang.python.linters = {
   {
@@ -292,4 +317,3 @@ lvim.lang.python.linters = {
 -- lvim.autocommands.custom_groups = {
 --   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
 -- }
-

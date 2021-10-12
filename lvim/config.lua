@@ -29,8 +29,9 @@ lvim.plugins = {
       vim.g.rnvimr_draw_border = 1
       vim.g.rnvimr_pick_enable = 1
       vim.g.rnvimr_bw_enable = 10
-      -- vim.g_rnvimr_layout = { 'relative': 'editor', 'width': &columns, 'height': &lines - 2, 'col': 0, 'row': 0, 'style': 'minimal' }
-      -- vim.cmd([vim.g.rnvimr_layout = { :'relative': 'editor', 'width': &columns, 'height': &lines - 2, 'col': 0, 'row': 0, 'style': 'minimal' }])
+      vim.g.rnvimr_layout = {
+        {"relative", "editor"},
+      }
       end,
    },
   {
@@ -107,7 +108,8 @@ vim.opt.swapfile = false -- creates a swapfile
 vim.opt.termguicolors = true -- set term gui colors (most terminals support this)
 vim.opt.timeoutlen = 100 -- time to wait for a mapped sequence to complete (in milliseconds)
 vim.opt.title = true -- set the title of window to the value of the titlestring
-vim.opt.titlestring = "%<%F%=%l/%L - LunarVim" -- what the title of the window will be set to
+-- vim.opt.titlestring = "%<%F%=%l/%L - LunarVim" -- what the title of the window will be set to
+vim.opt.titlestring = "LunarVim" -- what the title of the window will be set to
 -- vim.opt.undodir = "~/.config/lvim/undo" -- set an undo directory
 vim.opt.undofile = true -- enable persistent undo
 vim.opt.updatetime = 300 -- faster completion
@@ -129,6 +131,7 @@ vim.opt.sidescrolloff = 8
 lvim.builtin.nvimtree.quit_on_open = 0
 lvim.builtin.lualine.style = "default"
 lvim.lsp.diagnostics.virtual_text = true
+
 lvim.builtin.dashboard.custom_header = {
 "      +++++++       xxxxxxx      xxxxxxx",
 "      +:::::+        x:::::x    x:::::x ",
@@ -142,7 +145,7 @@ lvim.builtin.dashboard.custom_header = {
 "      +++++++       xxxxxxx      xxxxxxx",
 }
 
-lvim.builtin.dashboard.footer = {"High On Life till the day we die."}
+lvim.builtin.dashboard.lvim_site = "milindm.me"
 
 local status = {
   ["NORMAL"]  = "am very normal :)",

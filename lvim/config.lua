@@ -23,18 +23,6 @@ lvim.plugins = {
     end,
   },
   {
-  "kevinhwang91/rnvimr",
-    cmd = "RnvimrToggle",
-    config = function()
-      vim.g.rnvimr_draw_border = 1
-      vim.g.rnvimr_pick_enable = 1
-      vim.g.rnvimr_bw_enable = 10
-      vim.g.rnvimr_layout = {
-        {"relative", "editor"},
-      }
-      end,
-   },
-  {
     "tpope/vim-fugitive",
     cmd = {
       "G",
@@ -81,14 +69,41 @@ lvim.plugins = {
     "folke/trouble.nvim",
       cmd = "TroubleToggle",
   },
+  {
+    "filipdutescu/renamer.nvim",
+      branch = 'master',
+      requires = { {'nvim-lua/plenary.nvim'} },
+      config = function()
+        require("renamer").setup {
+          title = '+×',
+          show_refs = true,
+          padding = {
+            top = 0,
+            bottom = 0,
+            left = 0,
+            right = 0,
+          },
+      }
+      end,
+  },
+  {
+    'wfxr/minimap.vim',
+    run = "cargo install --locked code-minimap",
+    cmd = {"Minimap", "MinimapClose", "MinimapToggle", "MinimapRefresh", "MinimapUpdateHighlight"},
+    config = function ()
+      vim.cmd ("let g:minimap_width = 10")
+      vim.cmd ("let g:minimap_auto_start = 1")
+      vim.cmd ("let g:minimap_auto_start_win_enter = 1")
+    end,
+  },
 }
 
 -- My own config
 vim.opt.backup = false -- creates a backup file
 vim.opt.clipboard = "unnamedplus" -- allows neovim to access the system clipboard
 vim.opt.cmdheight = 2 -- more space in the neovim command line for displaying messages
-vim.opt.colorcolumn = "99999" -- fixes indentline for now
 vim.opt.completeopt = { "menuone", "noselect" }
+vim.opt.colorcolumn = "99999" -- fixes indentline for now
 vim.opt.conceallevel = 0 -- so that `` is visible in markdown files
 vim.opt.fileencoding = "utf-8" -- the encoding written to a file
 vim.opt.foldmethod = "manual" -- folding set to "expr" for treesitter based folding
@@ -128,7 +143,7 @@ vim.opt.spell = false
 vim.opt.scrolloff = 8 -- is one of my fav
 vim.opt.sidescrolloff = 8
 
-lvim.builtin.nvimtree.quit_on_open = 0
+lvim.builtin.nvimtree.quit_on_open = 1
 lvim.builtin.lualine.style = "default"
 lvim.lsp.diagnostics.virtual_text = true
 
@@ -145,8 +160,6 @@ lvim.builtin.dashboard.custom_header = {
 "      +++++++       xxxxxxx      xxxxxxx",
 }
 
-lvim.builtin.dashboard.lvim_site = "milindm.me"
-
 local status = {
   ["NORMAL"]  = "am very normal :)",
   ["INSERT"]  = " inserting shit  ",
@@ -162,11 +175,11 @@ lvim.builtin.lualine.sections.lualine_a = {
 {
     "mode",
     fmt = function(mode)
-          local status_val = status[mode]
+          -- local status_val = status[mode]
           -- if status_val == nil then
           --   return mode
           -- end
-          return status_val
+          return status[mode]
      end
   },
 }
@@ -194,7 +207,8 @@ lvim.builtin.bufferline.options = {
 lvim.builtin.lualine.options.theme = "tokyonight"
 
 lvim.builtin.which_key.mappings["f"] = { "<cmd>Telescope live_grep<CR>", "Find In Folder" }
-lvim.builtin.which_key.mappings["r"] = { "<cmd>RnvimrToggle<CR>", "Ranger File Navigator" }
+lvim.builtin.which_key.mappings["m"] = { "<cmd>MinimapToggle<CR>", "Toggle Minimap" }
+-- lvim.builtin.which_key.mappings["r"] = { "<cmd>RnvimrToggle<CR>", "Ranger File Navigator" }
 
 lvim.builtin.which_key.mappings["a"] = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" }
 
@@ -215,8 +229,10 @@ lvim.builtin.which_key.mappings["T"] = {
   l = { "<cmd>TroubleToggle loclist<cr>", "Loclist" },
   r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
 }
-
 lvim.builtin.which_key.mappings["t"] = {"<cmd>TroubleToggle lsp_workspace_diagnostics<cr>", "Toggle Trouble Diagnostics" }
+
+
+lvim.builtin.which_key.mappings["l"]["r"] = {"<cmd>lua require('renamer').rename{empty=true,}<cr>", "Rename"}
 
 lvim.transparent_window = true
 
@@ -229,8 +245,10 @@ lvim.keys.normal_mode["gh"] = "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics
 
 -- general
 lvim.log.level = "warn"
+
 lvim.format_on_save = true
 lvim.lint_on_save = true
+
 lvim.colorscheme = "tokyonight"
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
@@ -254,10 +272,10 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 --   w = { "<cmd>Trouble lsp_workspace_diagnostics<cr>", "Diagnosticss" },
 -- }
 
--- TODO
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.dashboard.active = true
 lvim.builtin.terminal.active = true
+-- lvim.builtin.dap.active = true
 lvim.builtin.nvimtree.side = "left"
 lvim.builtin.nvimtree.show_icons.git = 0
 
@@ -278,45 +296,25 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- end
 
 -- set a formatter if you want to override the default lsp one (if it exists)
-lvim.lang.python.formatters = {
+local formatters = require "lvim.lsp.null-ls.formatters"
+
+formatters.setup {
+  -- {
+  --   exe = "prettier",
+  --   filetypes = {"typescript", "javascript", "html", "css", "json"},
+  --   args = {}
+  -- },
   {
     exe = "black",
+    filetypes = {"python"},
     args = {}
-  }
+  },
 }
 
-lvim.lang.html.formatters = {
-  {
-    exe = "prettier",
-    args = {}
-  }
-}
-
-lvim.lang.json.formatters = {
-  {
-    exe = "prettier",
-    args = {}
-  }
-}
-
--- set an additional linter
-lvim.lang.python.linters = {
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
   {
     exe = "flake8",
-    args = {}
-  }
+    filetypes = {"python"}
+  },
 }
-
--- Additional Plugins
--- lvim.plugins = {
---     {"folke/tokyonight.nvim"}, {
---         "ray-x/lsp_signature.nvim",
---         config = function() require"lsp_signature".on_attach() end,
---         event = "InsertEnter"
---     }
--- }
-
--- Autocommands (https://neovim.io/doc/user/autocmd.html)
--- lvim.autocommands.custom_groups = {
---   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
--- }

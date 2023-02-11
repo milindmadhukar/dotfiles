@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+if [[ $(powerprofilesctl get) == power-saver ]]; then
+  echo " 󰌪"
+elif [[ $(powerprofilesctl get) == balanced ]]; then
+  echo "  " 
+elif [[ $(powerprofilesctl get) == performance ]]; then
+  echo " "
+fi

@@ -1,6 +1,8 @@
 # dotfiles
 The configuration of software I use.
 
+![Screenshot 1](https://user-images.githubusercontent.com/68477234/218270286-806e8e56-52b3-450b-8eb6-ea114d93afcd.png) 
+
 ## Pre-requisites
 
 `git` and GNU `stow`

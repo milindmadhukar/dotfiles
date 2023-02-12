@@ -118,17 +118,17 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias dotfiles="cd ~/dotfiles"
 alias lv="lvim"
 alias nv="nvim"
 
-alias mcode="cd /home/milind/Desktop/Code"
+alias mcode="cd ~/Desktop/Code"
 
-alias alacrittyconf="lvim ~/.config/alacritty/alacritty.yml"
-alias kittyconf="cd ~/.config/kitty"
-alias lvimconf="lvim ~/.config/lvim/config.lua"
-alias nvimconf="cd ~/.config/nvim"
-alias zshconf="lvim ~/.zshrc"
-alias tintconf="lvim ~/wallpapers/tints.json"
+alias kittyconf="cd ~/dotfiles/kitty/.config/kitty/"
+alias lvimconf="cd ~/dotfiles/lvim/.config/lvim/ && nvim config.lua"
+alias nvimconf="cd ~/dotfiles/nvim/.config/nvim/"
+alias zshconf="nvim ~/dotfiles/zsh/.zshrc"
+alias tintconf="nvim ~/wallpapers/tints.json"
 
 alias updatelvim="cd ~/.local/share/lunarvim/lvim && git pull"
 alias updatekitty="curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
@@ -141,13 +141,13 @@ alias piston="cd ~/Desktop/Code/Golang\ Projects/go-piston/"
 alias portfolio="cd ~/Desktop/Code/Golang\ Projects/portfolio"
 alias garrixrocks="cd ~/Desktop/Code/Garrix/garrix.rocks"
 alias garrixbot="cd ~/Desktop/Code/Garrix/garrix-bot"
-alias plusxplay="cd ~/Desktop/Code/Garrix/plusxplay"
+alias plusxplay="cd ~/Desktop/Code/plusxhub/plusxplay"
 alias aoc="cd ~/Desktop/Code/Advent-Of-Code/"
-alias nfteseum="cd ~/Desktop/Code/Golang\ Projects/nfteseum/api"
 
 alias kssh="kitty +kitten ssh"
 alias icat="kitty +kitten icat"
 alias vtop="vtop --theme wizard"
+alias lg="lazygit"
 
 bgr() {
    python3 $HOME/.config/zsh/random_wallpaper.py

@@ -148,6 +148,7 @@ alias kssh="kitty +kitten ssh"
 alias icat="kitty +kitten icat"
 alias vtop="vtop --theme wizard"
 alias lg="lazygit"
+alias clock="tty-clock -c -s -S -B -C 2"
 
 bgr() {
    python3 $HOME/.config/zsh/random_wallpaper.py

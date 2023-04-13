@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Directory containing the images
+DIRECTORY="/home/milind/wallpapers/"
+
+# Array to hold file paths
+FILES=()
+
+# Supported image file formats
+SUPPORTED_FORMATS=("jpg" "jpeg" "png" "gif")
+
+# Populate the array with file paths from the directory for supported image file formats
+for file in "$DIRECTORY"/*; do
+  if [ -f "$file" ]; then
+    # Extract file extension
+    file_extension="${file##*.}"
+    # Check if file extension is in the list of supported formats
+    if [[ "${SUPPORTED_FORMATS[@]}" =~ "${file_extension,,}" ]]; then
+      FILES+=("$file")
+    fi
+  fi
+done
+
+NUM_FILES=${#FILES[@]}
+INDEX=$((RANDOM % NUM_FILES))
+RANDOM_FILE="${FILES[$INDEX]}"
+
+# Pass the file to feh
+feh --bg-scale "$RANDOM_FILE"

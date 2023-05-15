@@ -93,6 +93,8 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+tmux -u 2> /dev/null
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -109,6 +111,10 @@ source $ZSH/oh-my-zsh.sh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
+#
+
+bindkey -s ^f "tmux-sessionizer\n"
+bindkey -s ^k "cht.sh\n"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -118,6 +124,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias hexec="history | fzf | sed -E 's/^[[:space:]]*[0-9]+//' | sh"
 alias dotfiles="cd ~/dotfiles"
 alias lv="lvim"
 alias nv="nvim"
@@ -149,6 +156,8 @@ alias icat="kitty +kitten icat"
 alias vtop="vtop --theme wizard"
 alias lg="lazygit"
 alias clock="tty-clock -c -s -S -B -C 2"
+alias tmux="tmux -u"
+alias matrix="cmatrix"
 
 bgr() {
    python3 $HOME/.config/zsh/random_wallpaper.py
@@ -169,3 +178,4 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # fnm
 export PATH="/home/milind/.local/share/fnm:$PATH"
 eval "`fnm env`"
+export PATH=$PATH:/home/milind/.spicetify

@@ -65,11 +65,12 @@ gaps outer 3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh general
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh compact
 
 bindsym $mod+b exec $HOME/.config/polybar/launch.sh general
 bindsym $mod+Shift+b exec $HOME/.config/polybar/launch.sh compact
 
+bindsym $mod+c exec $HOME/.config/conky/toggle.sh
 
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -316,6 +317,7 @@ assign [class="Spotify"] $ws10
 assign [class="discord"] $ws3
 assign [class="brave-browser"] $ws1
 assign [class="kitty"] $ws2
+assign [class="RayTracing"] $ws5
 
 
 # assinging set workspaces
@@ -323,6 +325,9 @@ for_window [class=Spotify] focus
 for_window [class=discord] focus
 for_window [class=brave-browser] focus
 for_window [class=kitty] focus
+for_window [class=RayTracing] floating enable
+for_window [class=RayTracing] geometry 200x200
+for_window [class=RayTracing] focus
 
 # No Gaps needed on terminal NOTE: Might change later
 # workspace $ws2 gaps inner 0
@@ -385,7 +390,7 @@ exec --no-startup-id dex --autostart --environment i3
 #exec --no-startup-id setxkbmap -layout 'us,sk' -variant altgr-intl,qwerty -option 'grp:alt_caps_toggle'
 
 # start conky:
-#exec_always --no-startup-id conky
+exec_always --no-startup-id /home/milind/.config/conky/start.sh
 
 # start a script to setup displays
 # uncomment the next line, use arandr to setup displays and save the file as monitor:
@@ -394,7 +399,7 @@ exec --no-startup-id ~/.screenlayout/monitor.sh
 # set wallpaper
 # exec --no-startup-id sleep 2 && nitrogen --restore
 
-exec_always --no-startup-id sleep 1 && ~/.config/i3/scripts/random-desktop-wallpaper
+# exec_always --no-startup-id sleep 1 && ~/.config/i3/scripts/random-desktop-wallpaper
 # exec --no-startup-id sleep 1 && feh --bg-fill /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png
 
 # set powersavings for display:

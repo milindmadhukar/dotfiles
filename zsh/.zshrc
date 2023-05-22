@@ -93,7 +93,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-tmux -u 2> /dev/null
+# tmux -u 2> /dev/null
 
 # User configuration
 

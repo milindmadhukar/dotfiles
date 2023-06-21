@@ -93,8 +93,6 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# tmux -u 2> /dev/null
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -158,6 +156,8 @@ alias lg="lazygit"
 alias clock="tty-clock -c -s -S -B -C 2"
 alias tmux="tmux -u"
 alias matrix="cmatrix"
+
+alias ascap="cd ~/Desktop/Code/ascap_scraper/ && source venv/bin/activate && python main.py && deactivate && cd"
 
 bgr() {
    python3 $HOME/.config/zsh/random_wallpaper.py

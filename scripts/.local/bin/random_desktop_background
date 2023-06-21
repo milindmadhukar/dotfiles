@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Get a random image file which is a png or jpeg or jpg
+random_file=$(ls ~/wallpapers/ | grep -E "png|jpeg|jpg" | shuf -n 1)
+
+# Set the desktop background
+feh --bg-scale ~/wallpapers/$random_file

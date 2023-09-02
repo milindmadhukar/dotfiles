@@ -122,6 +122,7 @@ bindkey -s ^k "cht.sh\n"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias pop="~/resend_secrets.sh && pop"
 alias hexec="history | fzf | sed -E 's/^[[:space:]]*[0-9]+//' | sh"
 alias dotfiles="cd ~/dotfiles"
 alias lv="lvim"

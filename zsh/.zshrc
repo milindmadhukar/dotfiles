@@ -127,6 +127,7 @@ alias hexec="history | fzf | sed -E 's/^[[:space:]]*[0-9]+//' | sh"
 alias dotfiles="cd ~/dotfiles"
 alias lv="lvim"
 alias nv="nvim"
+# alias nv="neovide --multigrid"
 
 alias mcode="cd ~/Desktop/Code"
 
@@ -166,6 +167,16 @@ bgr() {
 
 bgs() {
     python3 $HOME/.config/zsh/select_wallpaper.py
+}
+
+proxy_on() {
+  export http_proxy=http://172.16.1.1:56349
+  export https_proxy=http://172.16.1.1:56349
+}
+
+proxy_off() {
+  unset http_proxy
+  unset https_proxy
 }
 
 source ~/powerlevel10k/powerlevel10k.zsh-theme

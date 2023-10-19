@@ -11,18 +11,25 @@ image = subprocess.run(
     stdout=subprocess.PIPE,
 )
 
-image = image.stdout.decode("utf-8").split("/")[-1].strip()
-path = os.path.join(os.getcwd(), image)
+
+image_path = "/".join(image.stdout.decode("utf-8").strip().split("/")[4:])
+print(image_path)
+
+base_path = "/home/milind/wallpapers/"
+
+path = base_path + image_path   
+
 os.system(f"kitty @ set-background-image {path}")
 
 tint = 0
 
 with open("tints.json", "r") as f:
     tints = json.load(f)
-    tint = tints.get(image, 0.83)
+    tint = tints.get(image_path, 0.83)
+    print(tint)
 with open("/home/milind/.config/kitty/background.conf", "w") as f:
     f.write(
-        f"background_image {path}\nbackground_tint {tint}\n"
+        f"background_image {image_path}\nbackground_tint {tint}\n"
         "background_image_layout scaled"
     )
 

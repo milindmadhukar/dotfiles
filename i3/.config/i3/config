@@ -401,7 +401,7 @@ exec --no-startup-id ~/.screenlayout/monitor.sh
 
 # exec_always --no-startup-id sleep 1 && ~/.config/i3/scripts/random-desktop-wallpaper
 # exec --no-startup-id sleep 1 && feh --bg-fill /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png
-exec --no-startup-id sleep 1 && feh --bg-fill ~/wallpapers/omen-valorant-uhdpaper.com-8K-5.2466.jpg
+exec_always --no-startup-id sleep 1 && feh --bg-fill ~/wallpapers/Wallpapers/009.jpg
 
 # set powersavings for display:
 exec --no-startup-id xset s 480 dpms 600 600 600

@@ -7,7 +7,17 @@ import json
 
 os.chdir("/home/milind/wallpapers/")
 
-image = random.choice([file for file in os.listdir() if file.endswith(".png")])
+def get_images():
+    base_path = os.getcwd()
+    images = []
+    for root, dirs, files in os.walk(base_path):
+        for file in files:
+            if file.endswith(".png"):
+                images.append(os.path.join("/".join(root.split("/")[4:]), file))
+    
+    return images
+
+image = random.choice(get_images())
 path = os.path.join(os.getcwd(), image)
 os.system(f"kitty @ set-background-image {path}")
 

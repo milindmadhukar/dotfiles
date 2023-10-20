@@ -17,7 +17,7 @@ sudo apt install git stow
 
 1. Clone the repository.
 ```bash
-git clone https://github.com/milindmadhukar/dotfiles.git ~
+git clone --recursive https://github.com/milindmadhukar/dotfiles.git ~
 ```
 
 1. Run stow to symlink everything or just select what you want

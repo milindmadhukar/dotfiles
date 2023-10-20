@@ -1,6 +1,7 @@
 # dotfiles
 The configuration of software I use.
 
+![Screenshot 2](https://user-images.githubusercontent.com/68477234/276937815-4dace757-d381-4743-b63c-ce68dd6aa958.png)
 ![Screenshot 1](https://user-images.githubusercontent.com/68477234/218270384-be39dee1-ccdc-4ea0-bde0-2aed220fd349.png)
 
 ## Pre-requisites

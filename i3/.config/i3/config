@@ -317,7 +317,7 @@ assign [class="Spotify"] $ws10
 assign [class="discord"] $ws3
 assign [class="brave-browser"] $ws1
 assign [class="kitty"] $ws2
-assign [class="RayTracing"] $ws5
+assign [class="RayTracing"] $ws5 
 
 
 # assinging set workspaces
@@ -325,9 +325,9 @@ for_window [class=Spotify] focus
 for_window [class=discord] focus
 for_window [class=brave-browser] focus
 for_window [class=kitty] focus
-for_window [class=RayTracing] floating enable
-for_window [class=RayTracing] geometry 200x200
-for_window [class=RayTracing] focus
+# for_window [class=RayTracing] floating enable
+# for_window [class=RayTracing] geometry 200x200
+# for_window [class=RayTracing] focus
 
 # No Gaps needed on terminal NOTE: Might change later
 # workspace $ws2 gaps inner 0
@@ -401,7 +401,7 @@ exec --no-startup-id ~/.screenlayout/monitor.sh
 
 # exec_always --no-startup-id sleep 1 && ~/.config/i3/scripts/random-desktop-wallpaper
 # exec --no-startup-id sleep 1 && feh --bg-fill /usr/share/endeavouros/backgrounds/endeavouros-wallpaper.png
-exec_always --no-startup-id sleep 1 && feh --bg-fill ~/wallpapers/Wallpapers/009.jpg
+exec_always --no-startup-id sleep 1 && feh --bg-fill ~/wallpapers/Wallpapers/058.png
 
 # set powersavings for display:
 exec --no-startup-id xset s 480 dpms 600 600 600

@@ -47,9 +47,9 @@ conky.config = {
 
 	--Textual
 	format_human_readable = true,				-- KiB, MiB rather then number of bytes
-	font  = 'FiraCode Nerd Font',  	-- the default font used
-	font1 = 'FiraCode Nerd Font:size=16',         	-- font for the time
-	font2 = 'FiraCode Nerd Font:size=24',               	-- font for the date
+	font  = 'Hack Nerd Font',  	-- the default font used
+	font1 = 'Hack Nerd Font:size=16',         	-- font for the time
+	font2 = 'Hack Nerd Font:size=24',               	-- font for the date
 	override_utf8_locale = true,				-- force UTF8 requires xft
 	short_units = true,							-- shorten units from KiB to k
 	-- top_name_width = 400,						-- width for $top name value default 15

@@ -108,7 +108,7 @@ ${font}╭───────────────────────�
 │  ${color1} Cached: ${color2}${memeasyfree}${alignr}│
 │  ${color1} Free: ${color2}${memfree}${alignr}│
 │  ${color1} Total: ${color2}${memmax}${alignr}│
-│  ${color1}${memgraph cpu10 40,310 A6DA95 ED8796}${color2}  ${voffset -40}│
+│  ${color1}${memgraph cpu10 40,310 A6DA95 ED8796}${color2}  ${voffset -40}${alignr}│
 │                                   │
 │                                   │
 ╰───────────────────────────────────╯

@@ -85,7 +85,7 @@ conky.text = [[
 
                                  │ ${color1} Model: ${color2}82JW HP OMEN 16
                                  │ ${color1} Processor: ${color2}AMD Ryzen 7 6800H
-                                 │ ${color1} Graphics: ${color2}AMD Radeon RX6650M
+                                 │ ${color1}󰍛 Graphics: ${color2}AMD Radeon RX6650M
                                  |
                                  ╭───────────── ${font1}${color3}${voffset -5}System${color2}${font} ────────────${voffset 0}
                                  │ ${color1} OS: ${color2}Endeavour OS

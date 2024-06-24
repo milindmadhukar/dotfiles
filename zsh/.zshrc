@@ -127,6 +127,7 @@ alias hexec="history | fzf | sed -E 's/^[[:space:]]*[0-9]+//' | sh"
 alias dotfiles="cd ~/dotfiles"
 alias lv="lvim"
 alias nv="nvim"
+alias nvchad="NVIM_APPNAME=\"nvchad\" nvim"
 # alias nv="neovide --multigrid"
 
 alias mcode="cd ~/Desktop/Code"

@@ -1,15 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-# If you come from bash you might have to change your $PATH.
-
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
 # Go Path
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$HOME/go/bin:$PATH
@@ -17,13 +5,9 @@ export PATH=$HOME/go/bin:$PATH
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/.config/rofi/scripts:$PATH
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -91,8 +75,6 @@ plugins=(
 	zsh-autosuggestions
 )
 
-source $ZSH/oh-my-zsh.sh
-
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -111,8 +93,8 @@ source $ZSH/oh-my-zsh.sh
 # export ARCHFLAGS="-arch x86_64"
 #
 
-bindkey -s ^f "tmux-sessionizer\n"
-bindkey -s ^k "cht.sh\n"
+# bindkey -s ^f "tmux-sessionizer\n"
+# bindkey -s ^k "cht.sh\n"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -128,6 +110,7 @@ alias dotfiles="cd ~/dotfiles"
 alias lv="lvim"
 alias nv="nvim"
 alias nvchad="NVIM_APPNAME=\"nvchad\" nvim"
+alias jellyfin="sudo chmod 666 /var/run/docker.sock && sudo mount /dev/sda1 /mnt/harddrive && cd ~/docker/jellyfin && docker compose down && docker compose up"
 # alias nv="neovide --multigrid"
 
 alias mcode="cd ~/Desktop/Code"
@@ -140,6 +123,9 @@ alias tintconf="nvim ~/wallpapers/tints.json"
 
 alias updatelvim="cd ~/.local/share/lunarvim/lvim && git pull"
 alias updatekitty="curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
+alias updatevencord="sh -c \"\$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)\""
+
+alias forgetwifi="sudo $HOME/.config/zsh/forget_wifi.sh"
 
 alias go-musixmatch="cd ~/Desktop/Code/Golang\ Projects/go-musixmatch"
 alias stonksapi="cd ~/Desktop/Code/Golang\ Projects/stonksapi"
@@ -161,6 +147,8 @@ alias tmux="tmux -u"
 alias matrix="cmatrix"
 
 alias ascap="cd ~/Desktop/Code/ascap_scraper/ && source venv/bin/activate && python main.py && deactivate && cd"
+alias wifi="cd ~/Desktop/Code && python3 vitlogin.py && cd"
+alias ytdlpbest='yt-dlp -f "bv*+ba/b" --merge-output-format mp4 --embed-metadata --embed-thumbnail --add-metadata'
 
 bgr() {
    python3 $HOME/.config/zsh/random_wallpaper.py
@@ -180,19 +168,9 @@ proxy_off() {
   unset https_proxy
 }
 
-source ~/powerlevel10k/powerlevel10k.zsh-theme
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 export PATH=$PATH:/home/milind/.spicetify
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+eval $(thefuck --alias)
 
 # bun completions
 [ -s "/home/milind/.bun/_bun" ] && source "/home/milind/.bun/_bun"
@@ -200,3 +178,20 @@ export NVM_DIR="$HOME/.nvm"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# fnm
+FNM_PATH="/home/milind/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/milind/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi
+
+export ANTHROPIC_API_KEY=$(< ~/anthropicapikey.txt)
+
+# pnpm
+export PNPM_HOME="/home/milind/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

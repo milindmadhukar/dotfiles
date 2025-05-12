@@ -40,7 +40,7 @@ tooltip {
 #workspaces button:hover,
 #workspaces button.active {
   color: @mauve;
-  background-color: rgba(17, 17, 27, 0.35);
+  background-color: rgba(100, 100, 100, 0.25);
 }
 
 #workspaces button:hover {

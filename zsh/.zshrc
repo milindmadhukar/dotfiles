@@ -1,4 +1,15 @@
-# Go Path
+# Enable Powerlevel11k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$HOME/go/bin:$PATH
 
@@ -8,6 +19,11 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.cargo/bin:$PATH
 export PATH=$HOME/.config/rofi/scripts:$PATH
 
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time Oh My Zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -69,11 +85,10 @@ export PATH=$HOME/.config/rofi/scripts:$PATH
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-	git
-	golang
-	zsh-autosuggestions
-)
+
+plugins=(git golang zsh-autosuggestions)
+
+source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -86,42 +101,35 @@ plugins=(
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+#   export EDITOR='nvim'
 # fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-#
+# export ARCHFLAGS="-arch $(uname -m)"
 
-# bindkey -s ^f "tmux-sessionizer\n"
-# bindkey -s ^k "cht.sh\n"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
+alias zshconfig="nvim ~/.zshrc"
+alias hyprconf="cd ~/.config/hypr/"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias pop="~/resend_secrets.sh && pop"
+alias lvimconf="cd ~/dotfiles/lvim/.config/lvim/ && nvim config.lua"
 alias hexec="history | fzf | sed -E 's/^[[:space:]]*[0-9]+//' | sh"
 alias dotfiles="cd ~/dotfiles"
-alias lv="lvim"
 alias nv="nvim"
-alias nvchad="NVIM_APPNAME=\"nvchad\" nvim"
-alias jellyfin="sudo chmod 666 /var/run/docker.sock && sudo mount /dev/sda1 /mnt/harddrive && cd ~/docker/jellyfin && docker compose down && docker compose up"
-# alias nv="neovide --multigrid"
 
-alias mcode="cd ~/Desktop/Code"
+alias mcode="cd ~/Code"
 
 alias kittyconf="cd ~/dotfiles/kitty/.config/kitty/"
-alias lvimconf="cd ~/dotfiles/lvim/.config/lvim/ && nvim config.lua"
 alias nvimconf="cd ~/dotfiles/nvim/.config/nvim/"
 alias zshconf="nvim ~/dotfiles/zsh/.zshrc"
-alias tintconf="nvim ~/wallpapers/tints.json"
 
-alias updatelvim="cd ~/.local/share/lunarvim/lvim && git pull"
 alias updatekitty="curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
 alias updatevencord="sh -c \"\$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)\""
 
@@ -138,13 +146,15 @@ alias garrixbot="cd ~/Desktop/Code/Garrix/garrix-bot"
 alias plusxplay="cd ~/Desktop/Code/plusxhub/plusxplay"
 alias aoc="cd ~/Desktop/Code/Advent-Of-Code/"
 
+# TODO: Remove kitty specific stuff
 alias kssh="kitty +kitten ssh"
 alias icat="kitty +kitten icat"
-alias vtop="vtop --theme wizard"
+alias ls="lsd"
 alias lg="lazygit"
 alias clock="tty-clock -c -s -S -B -C 2"
 alias tmux="tmux -u"
 alias matrix="cmatrix"
+alias neofetch="fastfetch"
 
 alias ascap="cd ~/Desktop/Code/ascap_scraper/ && source venv/bin/activate && python main.py && deactivate && cd"
 alias wifi="cd ~/Desktop/Code && python3 vitlogin.py && cd"
@@ -168,17 +178,6 @@ proxy_off() {
   unset https_proxy
 }
 
-export PATH=$PATH:/home/milind/.spicetify
-
-eval $(thefuck --alias)
-
-# bun completions
-[ -s "/home/milind/.bun/_bun" ] && source "/home/milind/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
 # fnm
 FNM_PATH="/home/milind/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
@@ -188,10 +187,5 @@ fi
 
 export ANTHROPIC_API_KEY=$(< ~/anthropicapikey.txt)
 
-# pnpm
-export PNPM_HOME="/home/milind/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

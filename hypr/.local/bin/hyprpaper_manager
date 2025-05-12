@@ -1,0 +1,72 @@
+#!/bin/bash
+
+WALLPAPER_DIR="$HOME/wallpapers"
+LOCKDIR=/tmp/wallpaper.lock
+
+
+function change_wallpaper_periodically {
+    while true; do
+        sleep 1800  # 30 minutes
+        "$0" --set_random
+    done
+}
+
+function launch {
+    # Get a random wallpaper
+    WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) | shuf -n 1)
+    
+    # Create or overwrite hyprpaper.conf
+    mkdir -p ~/.config/hypr
+    echo "preload = $WALLPAPER" > ~/.config/hypr/hyprpaper.conf
+    echo "wallpaper = ,$WALLPAPER" >> ~/.config/hypr/hyprpaper.conf
+
+    # Start the periodic wallpaper changer in the background
+    change_wallpaper_periodically &
+
+    # Start hyprpaper
+    while true; do
+        hyprpaper
+        sleep 1
+    done
+}
+
+function set_random {
+    # Set lock
+    if mkdir -- "$LOCKDIR"; then
+
+        CURRENT_WALL=$(hyprctl hyprpaper listloaded)
+        # Get a random wallpaper that is not the current one
+        WALLPAPER=$(find "$WALLPAPER_DIR" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) ! -name "$(basename "$CURRENT_WALL")" | shuf -n 1)
+
+        hyprctl hyprpaper reload ,"$WALLPAPER"
+
+        # Remove lockdir when the script finishes, or when it receives a signal
+        trap 'rm -rf -- "$LOCKDIR"' 0
+
+    else
+
+        printf >&2 'cannot acquire lock, giving up on %s\n' "$LOCKDIR"
+
+        exit 0
+    fi
+}
+
+# Parse command-line arguments
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+        --set_random)
+            set_random
+            shift
+            ;;
+        --launch)
+            launch
+            shift
+            ;;
+        *)
+            echo "Error: Unknown option: $key"
+            exit 1
+            ;;
+    esac
+done
+

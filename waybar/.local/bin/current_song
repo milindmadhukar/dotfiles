@@ -1,0 +1,57 @@
+#!/bin/bash
+
+if ! command -v playerctl &>/dev/null; then
+    exit 0
+fi
+
+players=$(playerctl -l 2>/dev/null | grep -v '^$')
+if [ -z "$players" ]; then
+    exit 0
+fi
+
+player=$(echo "$players" | grep 'spotify')
+
+    status=$(playerctl --player="$player" status 2>/dev/null)
+
+    if [[ "$status" == "Playing" || "$status" == "Paused" ]]; then
+        artist=$(playerctl --player="$player" metadata artist 2>/dev/null)
+        title=$(playerctl --player="$player" metadata title 2>/dev/null)
+
+        icon=" "
+        if [ "$status" == "Paused" ]; then
+            icon=" "
+        fi
+
+        # Échappement JSON
+        json_escape() {
+            echo "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
+        }
+
+        max_artist=20
+        max_title=20
+
+        if [ ${#artist} -gt $max_artist ]; then
+            artist="${artist:0:$max_artist}…"
+        fi
+
+        if [[ "$artist" =~ ^[Mm]artin\ [Gg]arrix$ ]]; then
+            icon="+×"
+        fi
+
+        if [[ "$artist" =~ ^[Aa]vicii$ ]]; then
+            icon="◢ ◤"
+        fi
+
+        if [ ${#title} -gt $max_title ]; then
+            title="${title:0:$max_title}…"
+        fi
+
+        artist_escaped=$(json_escape "$artist")
+        title_escaped=$(json_escape "$title")
+        player_escaped=$(json_escape "$player")
+
+        echo "{\"text\": \"$icon $artist_escaped - $title_escaped\", \"tooltip\": \" $title_escaped via $player_escaped\", \"class\": \"$status\"}"
+    else
+        exit 0
+    fi
+

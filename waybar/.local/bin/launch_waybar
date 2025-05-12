@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+
+# Check if waybar is running
+if pgrep -x "waybar" > /dev/null; then
+    # If running, kill it
+    killall waybar
+else
+    # If not running, start it
+    if [ -z "$1" ]; then
+        waybar &
+    else
+        waybar -c "$1" &
+    fi
+fi
+
+

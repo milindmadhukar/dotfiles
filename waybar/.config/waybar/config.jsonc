@@ -23,6 +23,7 @@
     "hyprland/window"
   ],
   "modules-right": [
+    "idle_inhibitor",
     "cpu",
     "memory",
     "battery",
@@ -30,7 +31,6 @@
     "bluetooth",
     "tray",
     "clock",
-    "custom/notification",
     "custom/exit"
   ],
   //LEFT
@@ -58,7 +58,8 @@
       "(.*) Thunar": "Thunar",
       "(.*)obs(.*)": "OBS",
       "(.*)ghostty": "ghostty",
-      "(.*)dolphin": "dolphin"
+      "(.*)dolphin": "dolphin",
+      "Google-chrome": "chrome"
     },
     "on-click-middle": "pkill waybar && hyprctl dispatch exec waybar"
   },
@@ -119,6 +120,18 @@
     "spacing": 10,
     "show-passive-items": false
   },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "rotate": 0,
+    "format-icons": {
+      "activated": "󰅶 ",
+      "deactivated": "󰛊 "
+    },
+    "tooltip-format-activated": "Caffeine Mode Active",
+    "tooltip-format-deactivated": "Caffeine Mode Inactive"
+  },
+
   "cpu": {
     "format": " {usage}%",
     "tooltip": true
@@ -161,7 +174,6 @@
     "on-click": "blueman-manager",
     "format-no-controller": ""
   },
-
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
     "format": "{icon} {volume}% ",
@@ -176,26 +188,6 @@
       ]
     },
     "on-click": "pavucontrol"
-  },
-  "custom/notification": {
-    "tooltip": false,
-    "format": "{icon}",
-    "format-icons": {
-      "notification": "<span foreground='red'><sup></sup></span>",
-      "none": "",
-      "dnd-notification": "<span foreground='red'><sup></sup></span>",
-      "dnd-none": "",
-      "inhibited-notification": "<span foreground='red'><sup></sup></span>",
-      "inhibited-none": "",
-      "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-      "dnd-inhibited-none": ""
-    },
-    "return-type": "json",
-    "exec-if": "which swaync-client",
-    "exec": "swaync-client -swb",
-    "on-click": "swaync-client -t -sw",
-    "on-click-right": "swaync-client -d -sw",
-    "escape": true
   },
   //power button
   "custom/exit": {

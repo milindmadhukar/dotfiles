@@ -6,11 +6,12 @@
 
 #window {
   background: #1d2021;
-  margin: auto;
   padding: 10px;
   border-radius: 5px;
+  min-height: 200px;
+  min-width: 400px;
+  margin: 20px;
 }
-
 #input {
   padding: 10px;
   margin-bottom: 10px;
@@ -19,6 +20,7 @@
 
 #outer-box {
   padding: 20px;
+  min-height: 100px;
 }
 
 #img {

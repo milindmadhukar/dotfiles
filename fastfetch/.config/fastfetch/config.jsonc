@@ -15,7 +15,7 @@
       "type": "command",
       "key": "  ",
       "keyColor": "blue",
-      "text": "splash=$(hyprctl splash);echo $splash"
+      "text": "echo 'hello world from spaceship!'"
     },
     {
       "type": "custom",

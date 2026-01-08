@@ -26,9 +26,9 @@
     "idle_inhibitor",
     "cpu",
     "memory",
+    "disk",
     "battery",
     "pulseaudio",
-    "bluetooth",
     "tray",
     "clock",
     "custom/exit"
@@ -117,7 +117,7 @@
   },
   "tray": {
     "icon-size": 19,
-    "spacing": 10,
+    "spacing": 5,
     "show-passive-items": false
   },
 
@@ -138,6 +138,12 @@
   },
   "memory": {
     "format": "󰾆 {}%"
+  },
+  "disk": {
+    "interval": 30,
+    "format": "󰋊 {percentage_used}% ",
+    "path": "/",
+    "tooltip-format": "Used: {used} / Total: {total}"
   },
   "battery": {
     "states": {
@@ -164,28 +170,15 @@
       "󰁹"
     ]
   },
-  //bluethooh icon
-  "bluetooth": {
-    "format": "",
-    "format-disabled": "󰂲",
-    "format-connected": "󰂰 {device_alias}",
-    "format-off": "",
-    "interval": 30,
-    "on-click": "blueman-manager",
-    "format-no-controller": ""
-  },
+
   "pulseaudio": {
     // "scroll-step": 1, // %, can be a float
-    "format": "{icon} {volume}% ",
-    "format-bluetooth": "{icon} {volume}% ",
+    "format": "{icon} {volume}%",
+    "format-bluetooth": "{icon} {volume}%",
     "tooltip-format": "{volume}",
-    "format-muted": "<span foreground='#f38ba8'>󰝟 Muted</span>",
+    "format-muted": "<span foreground='#f38ba8'>󰖁 Muted</span>",
     "format-icons": {
-      "default": [
-        "",
-        "",
-        ""
-      ]
+      "default": ["󰕿", "󰖀", "󰕾"]
     },
     "on-click": "pavucontrol"
   },

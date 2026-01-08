@@ -50,9 +50,10 @@ tooltip {
 /* ---- Shared Style Blocks ---- */
 #window,
 #clock,
-#bluetooth,
 #cpu,
 #memory,
+#disk,
+#battery,
 #tray,
 #pulseaudio,
 #custom-wayves,
@@ -81,7 +82,8 @@ tooltip {
 }
 
 #cpu,
-#pulseaudio,
+#disk,
+#battery,
 #clock {
   margin-right: 0;
   border-top-right-radius: 0;
@@ -89,6 +91,8 @@ tooltip {
 }
 
 #memory,
+#battery,
+#pulseaudio,
 #network,
 #custom-exit {
   margin-left: 0;
@@ -97,7 +101,6 @@ tooltip {
   border-bottom-left-radius: 0;
 }
 
-#bluetooth,
 #custom-notification,
 #custom-sep {
   margin: 5px 0 6px;

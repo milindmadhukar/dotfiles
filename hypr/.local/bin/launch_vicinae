@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+COMMAND="vicinae server"
+RESTART_DELAY=5
+
+trap 'echo "Stopping watchdog"; exit 0' SIGINT SIGTERM
+
+while true; do
+  echo "[$(date)] Starting vicinae server..."
+  $COMMAND
+  EXIT_CODE=$?
+
+  if [[ $EXIT_CODE -eq 0 ]]; then
+    echo "Server exited normally. Restarting anyway..."
+  else
+    echo "Server crashed (exit code $EXIT_CODE)"
+  fi
+
+  sleep $RESTART_DELAY
+done
+

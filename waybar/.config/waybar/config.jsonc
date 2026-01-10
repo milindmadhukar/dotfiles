@@ -52,14 +52,13 @@
     "seperate-outputs": true,
     "rewrite": {
       "": " Hyprland",
-      "Mozilla Firefox": "Firefox",
-      "Spotify (.*)": "Spotify",
-      "Brave-(.*)": "Brave",
-      "(.*) Thunar": "Thunar",
-      "(.*)obs(.*)": "OBS",
+      "Spotify (.*)": "spotify",
+      "Brave-(.*)": "brave",
+      "(.*)obs(.*)": "obs",
       "(.*)ghostty": "ghostty",
       "(.*)dolphin": "dolphin",
-      "Google-chrome": "chrome"
+      "Google-chrome": "chrome",
+      "(.*)Nautilus": "files"
     },
     "on-click-middle": "pkill waybar && hyprctl dispatch exec waybar"
   },

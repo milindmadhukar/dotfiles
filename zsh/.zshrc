@@ -123,6 +123,9 @@ alias lvimconf="cd ~/dotfiles/lvim/.config/lvim/ && nvim config.lua"
 alias hexec="history | fzf | sed -E 's/^[[:space:]]*[0-9]+//' | sh"
 alias dotfiles="cd ~/dotfiles"
 alias nv="nvim"
+alias vim="nvim"
+alias vi="nvim"
+alias cat="bat"
 
 alias mcode="cd ~/Code"
 
@@ -132,19 +135,20 @@ alias zshconf="nvim ~/dotfiles/zsh/.zshrc"
 
 alias updatekitty="curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
 alias updatevencord="sh -c \"\$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)\""
+alias updatemirrors="sudo reflector --save /etc/pacman.d/mirrorlist --protocol https --country India --latest 5 --sort age --fastest 5"
 
 alias forgetwifi="sudo $HOME/.config/zsh/forget_wifi.sh"
 
-alias go-musixmatch="cd ~/Desktop/Code/Golang\ Projects/go-musixmatch"
-alias stonksapi="cd ~/Desktop/Code/Golang\ Projects/stonksapi"
-alias Martin-Garrix-Bot="cd ~/Desktop/Code/Python\ Projects/Martin-Garrix-Bot && source venv/bin/activate"
-alias pycordia="cd ~/Desktop/Code/Python\ Projects/pycordia"
-alias piston="cd ~/Desktop/Code/Golang\ Projects/go-piston/"
-alias portfolio="cd ~/Desktop/Code/Golang\ Projects/portfolio"
-alias garrixrocks="cd ~/Desktop/Code/Garrix/garrix.rocks"
-alias garrixbot="cd ~/Desktop/Code/Garrix/garrix-bot"
-alias plusxplay="cd ~/Desktop/Code/plusxhub/plusxplay"
-alias aoc="cd ~/Desktop/Code/Advent-Of-Code/"
+alias go-musixmatch="cd ~/Code/Golang\ Projects/go-musixmatch"
+alias stonksapi="cd ~/Code/Golang\ Projects/stonksapi"
+alias Martin-Garrix-Bot="cd ~/Code/Python\ Projects/Martin-Garrix-Bot && source venv/bin/activate"
+alias pycordia="cd ~/Code/Python\ Projects/pycordia"
+alias piston="cd ~/Code/Golang\ Projects/go-piston/"
+alias portfolio="cd ~/Code/Golang\ Projects/portfolio"
+alias garrixrocks="cd ~/Code/Garrix/garrix.rocks"
+alias garrixbot="cd ~/Code/Garrix/garrix-bot"
+alias plusxplay="cd ~/Code/plusxhub/plusxplay"
+alias aoc="cd ~/Code/Advent-Of-Code/"
 
 # TODO: Remove kitty specific stuff
 alias kssh="kitty +kitten ssh"
@@ -156,8 +160,8 @@ alias tmux="tmux -u"
 alias matrix="cmatrix"
 alias neofetch="fastfetch"
 
-alias ascap="cd ~/Desktop/Code/ascap_scraper/ && source venv/bin/activate && python main.py && deactivate && cd"
-alias wifi="cd ~/Desktop/Code && python3 vitlogin.py && cd"
+alias ascap="cd ~/Code/ascap_scraper/ && source venv/bin/activate && python main.py && deactivate && cd"
+alias wifi="cd ~/Code && python3 vitlogin.py && cd"
 alias ytdlpbest='yt-dlp -f "bv*+ba/b" --merge-output-format mp4 --embed-metadata --embed-thumbnail --add-metadata'
 
 bgr() {
@@ -178,14 +182,27 @@ proxy_off() {
   unset https_proxy
 }
 
-# fnm
-FNM_PATH="/home/milind/.local/share/fnm"
-if [ -d "$FNM_PATH" ]; then
-  export PATH="/home/milind/.local/share/fnm:$PATH"
-  eval "`fnm env`"
-fi
-
-export ANTHROPIC_API_KEY=$(< ~/anthropicapikey.txt)
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /home/milind/.dart-cli-completion/zsh-config.zsh ]] && . /home/milind/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
+
+
+# bun completions
+[ -s "/home/milind/.bun/_bun" ] && source "/home/milind/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# fnm
+FNM_PATH="/home/milind/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "`fnm env`"
+fi

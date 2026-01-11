@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Ensure only one instance of THIS script runs
+if [[ $(pgrep -f $(basename $0) | wc -l) -gt 2 ]]; then
+    echo "Script is already running."
+    exit 1
+fi
+
+# Function to start swaync
+run_swaync() {
+    while true; do
+        # Start swaync and wait for it to exit
+        swaync
+        
+        # If it exits, wait 2 seconds and restart
+        echo "swaync exited with code $?. Restarting..."
+        sleep 2
+    done
+}
+
+# Run the loop in the background and disown it 
+# so it doesn't die when the terminal closes
+run_swaync & disown

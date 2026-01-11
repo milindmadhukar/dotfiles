@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Check if awww is running
+if ! pgrep -x awww-daemon > /dev/null; then
+    echo "Error: awww-daemon is not running"
+    echo "Start it with: awww-daemon &"
+    exit 1
+fi
+
+# Check if a wallpaper path was provided as argument
+if [ -n "$1" ]; then
+    WALL="$1"
+    # Verify the file exists
+    if [ ! -f "$WALL" ]; then
+        echo "Error: File not found: $WALL"
+        exit 1
+    fi
+else
+    # Find a random wallpaper
+    WALL=$(find ~/wallpapers -type f \( -name "*.jpg" -o -name "*.png" -o -name "*.webp" -o -name "*.gif" \) | shuf -n 1)
+    
+    # Check if a wallpaper was found
+    if [ -z "$WALL" ]; then
+        echo "Error: No wallpapers found in ~/wallpapers"
+        exit 1
+    fi
+fi
+
+# Set the wallpaper with random transition from cursor position
+awww img "$WALL" --transition-type any --transition-fps 144 --transition-duration 0.8

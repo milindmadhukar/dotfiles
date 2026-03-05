@@ -1,0 +1,41 @@
+# Audiocular Spark Hi-Res Configuration
+# Device: TTGK Technology Co.,Ltd Audiocular Spark (USB ID 3302:33a7)
+# Card name: "Spark" (usually card 4 when connected)
+#
+# This creates a dedicated 384kHz high-resolution sink for the Audiocular Spark.
+# When the DAC is not connected, this config will fail silently and not affect
+# your built-in audio.
+
+context.objects = [
+    {   factory = adapter
+        args = {
+            factory.name           = api.alsa.pcm.sink
+            node.name              = "audiocular-spark-384"
+            node.description       = "Audiocular Spark 384kHz"
+            media.class            = "Audio/Sink"
+            # Device detected as card 4 named "Spark"
+            # Using card name for automatic detection
+            api.alsa.path          = "hw:Spark"
+            api.alsa.period-size   = 512
+            api.alsa.headroom      = 512
+            audio.format           = "S32LE"
+            audio.rate             = 384000
+            audio.channels         = 2
+            audio.position         = [ FL FR ]
+            # Don't crash if device is not present
+            node.pause-on-idle     = false
+        }
+    }
+]
+
+# NOTE: Global clock settings are disabled to allow normal audio rates
+# for built-in speakers when DAC is disconnected.
+# The 384kHz rate will be used automatically when you select the
+# "Audiocular Spark 384kHz" output device.
+#
+# If you want to force 384kHz globally when DAC is connected, uncomment:
+# context.properties = {
+#     default.clock.rate = 384000
+#     default.clock.allowed-rates = [ 384000 ]
+#     default.clock.quantum = 1024
+# }

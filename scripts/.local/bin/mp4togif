@@ -1,0 +1,103 @@
+#!/bin/bash
+# High-quality MP4 to GIF converter for 1080p wallpapers
+# Usage: mp4togif <input.mp4> [fps] [width] [output.gif]
+# Example: mp4togif video.mp4 20 1920 wallpaper.gif
+
+# Default values
+DEFAULT_FPS=20
+DEFAULT_WIDTH=1920
+
+# Parse arguments
+INPUT_VIDEO="$1"
+FPS="${2:-$DEFAULT_FPS}"
+WIDTH="${3:-$DEFAULT_WIDTH}"
+OUTPUT_GIF="$4"
+
+# Validate input
+if [ -z "$INPUT_VIDEO" ]; then
+    echo "Usage: mp4togif <input.mp4> [fps] [width] [output.gif]"
+    echo ""
+    echo "Arguments:"
+    echo "  input.mp4     Input video file (required)"
+    echo "  fps           Frame rate (default: 20)"
+    echo "  width         Output width (default: 1920 for 1080p)"
+    echo "  output.gif    Output filename (default: auto-generated)"
+    echo ""
+    echo "Examples:"
+    echo "  mp4togif video.mp4                    # Basic conversion"
+    echo "  mp4togif video.mp4 15                 # 15 FPS"
+    echo "  mp4togif video.mp4 20 1920           # 20 FPS, 1920px wide"
+    echo "  mp4togif video.mp4 20 1920 wall.gif  # Custom output name"
+    exit 1
+fi
+
+if [ ! -f "$INPUT_VIDEO" ]; then
+    echo "Error: Input file '$INPUT_VIDEO' not found"
+    exit 1
+fi
+
+# Check if ffmpeg is available
+if ! command -v ffmpeg &> /dev/null; then
+    echo "Error: ffmpeg is required but not installed"
+    exit 1
+fi
+
+# Generate output filename if not provided
+if [ -z "$OUTPUT_GIF" ]; then
+    BASENAME=$(basename "$INPUT_VIDEO" | sed 's/\.[^.]*$//')
+    OUTPUT_GIF="${BASENAME}.gif"
+fi
+
+# Calculate height maintaining 16:9 aspect ratio (using integer arithmetic)
+HEIGHT=$((WIDTH * 9 / 16))
+
+echo "Converting: $INPUT_VIDEO"
+echo "Output: $OUTPUT_GIF"
+echo "Settings: ${FPS}fps, ${WIDTH}x${HEIGHT}"
+echo ""
+
+# Create temporary palette file
+TEMP_PALETTE=$(mktemp --suffix=.png)
+
+echo "Step 1/2: Generating optimized color palette..."
+ffmpeg -v warning -i "$INPUT_VIDEO" \
+    -vf "fps=$FPS,scale=$WIDTH:$HEIGHT:flags=lanczos,palettegen=stats_mode=diff" \
+    -y "$TEMP_PALETTE"
+
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to generate palette"
+    rm -f "$TEMP_PALETTE"
+    exit 1
+fi
+
+echo "Step 2/2: Creating high-quality GIF..."
+ffmpeg -v warning -stats -i "$INPUT_VIDEO" -i "$TEMP_PALETTE" \
+    -lavfi "fps=$FPS,scale=$WIDTH:$HEIGHT:flags=lanczos[x];[x][1:v]paletteuse=dither=floyd_steinberg" \
+    "$OUTPUT_GIF"
+
+CONVERSION_STATUS=$?
+
+# Clean up
+rm -f "$TEMP_PALETTE"
+
+if [ $CONVERSION_STATUS -eq 0 ]; then
+    # Show file sizes
+    ORIGINAL_SIZE=$(stat -c%s "$INPUT_VIDEO" 2>/dev/null)
+    GIF_SIZE=$(stat -c%s "$OUTPUT_GIF" 2>/dev/null)
+    
+    if [ ! -z "$ORIGINAL_SIZE" ] && [ ! -z "$GIF_SIZE" ]; then
+        ORIGINAL_MB=$((ORIGINAL_SIZE / 1024 / 1024))
+        GIF_MB=$((GIF_SIZE / 1024 / 1024))
+        echo ""
+        echo "✅ Conversion successful!"
+        echo "Original: ${ORIGINAL_MB} MB"
+        echo "GIF: ${GIF_MB} MB"
+        echo "Output: $OUTPUT_GIF"
+    else
+        echo "✅ Conversion successful!"
+        echo "Output: $OUTPUT_GIF"
+    fi
+else
+    echo "❌ Conversion failed"
+    exit 1
+fi

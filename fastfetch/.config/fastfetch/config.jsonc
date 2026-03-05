@@ -12,12 +12,6 @@
   },
   "modules": [
     {
-      "type": "command",
-      "key": "  ",
-      "keyColor": "blue",
-      "text": "echo 'hello world from spaceship!'"
-    },
-    {
       "type": "custom",
       "format": "┌──────────────────────────────────────────┐"
     },

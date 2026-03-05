@@ -1,0 +1,56 @@
+#!/bin/bash
+# Audiocular Spark DAC manager
+# Automatically enables high-res config when DAC is connected
+
+CONFIG_DIR="$HOME/.config/pipewire/pipewire.conf.d"
+TEMPLATE_FILE="$CONFIG_DIR/audiocular-spark-hires.conf.template"
+CONFIG_FILE="$CONFIG_DIR/audiocular-spark-hires.conf"
+
+# Check if Audiocular Spark is connected
+if grep -q "Spark" /proc/asound/cards 2>/dev/null; then
+    echo "✓ Audiocular Spark DAC detected"
+    
+    # Enable the config if not already enabled
+    if [ -f "$TEMPLATE_FILE" ] && [ ! -f "$CONFIG_FILE" ]; then
+        echo "  → Enabling high-res audio config..."
+        cp "$TEMPLATE_FILE" "$CONFIG_FILE"
+        echo "  → Restarting PipeWire..."
+        systemctl --user restart pipewire pipewire-pulse wireplumber
+        sleep 2
+    fi
+    
+    # Get the device IDs
+    SPARK_384=$(wpctl status | grep "Audiocular Spark 384kHz" | grep -E '^\s+\*?\s+[0-9]+\.' | awk '{print $2}' | tr -d '.*')
+    SPARK_ANALOG=$(wpctl status | grep "Audiocular Spark Analog Stereo" | grep -E '^\s+\*?\s+[0-9]+\.' | awk '{print $2}' | tr -d '.*')
+    
+    if [ -n "$SPARK_384" ]; then
+        echo "  → Setting default to: Audiocular Spark 384kHz (High-Res)"
+        wpctl set-default "$SPARK_384"
+    elif [ -n "$SPARK_ANALOG" ]; then
+        echo "  → Setting default to: Audiocular Spark Analog Stereo"
+        wpctl set-default "$SPARK_ANALOG"
+    fi
+else
+    echo "⚠ Audiocular Spark not connected"
+    
+    # Disable the config if enabled
+    if [ -f "$CONFIG_FILE" ]; then
+        echo "  → Disabling high-res audio config..."
+        rm "$CONFIG_FILE"
+        echo "  → Restarting PipeWire..."
+        systemctl --user restart pipewire pipewire-pulse wireplumber
+        sleep 2
+    fi
+    
+    # Get built-in speaker ID
+    BUILTIN=$(wpctl status | grep "Ryzen HD Audio Controller Speaker" | grep -E '^\s+\*?\s+[0-9]+\.' | awk '{print $2}' | tr -d '.*')
+    
+    if [ -n "$BUILTIN" ]; then
+        echo "  → Setting default to: Ryzen HD Audio Controller Speaker"
+        wpctl set-default "$BUILTIN"
+    fi
+fi
+
+echo ""
+echo "Current audio setup:"
+wpctl status | grep -A 8 "Sinks:"

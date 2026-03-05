@@ -164,6 +164,13 @@ alias ascap="cd ~/Code/ascap_scraper/ && source venv/bin/activate && python main
 alias wifi="cd ~/Code && python3 vitlogin.py && cd"
 alias ytdlpbest='yt-dlp -f "bv*+ba/b" --merge-output-format mp4 --embed-metadata --embed-thumbnail --add-metadata'
 
+alias psql="docker exec -it postgres-db-1 psql"
+
+alias dcu="docker compose up -d"
+alias dcd="docker compose down"
+alias dcl="docker compose logs -f"
+alias dcr="docker compose restart"
+
 bgr() {
    python3 $HOME/.config/zsh/random_wallpaper.py
 }
@@ -206,3 +213,14 @@ if [ -d "$FNM_PATH" ]; then
   export PATH="$FNM_PATH:$PATH"
   eval "`fnm env`"
 fi
+
+# fnm
+FNM_PATH="/home/milind/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "`fnm env`"
+fi
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

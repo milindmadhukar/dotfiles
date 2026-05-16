@@ -98,11 +98,12 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+  export TERM='xterm-256color'
+else
+  export EDITOR='nvim'
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
@@ -123,7 +124,6 @@ alias lvimconf="cd ~/dotfiles/lvim/.config/lvim/ && nvim config.lua"
 alias hexec="history | fzf | sed -E 's/^[[:space:]]*[0-9]+//' | sh"
 alias dotfiles="cd ~/dotfiles"
 alias nv="nvim"
-alias vim="nvim"
 alias vi="nvim"
 alias cat="bat"
 
@@ -136,6 +136,16 @@ alias zshconf="nvim ~/dotfiles/zsh/.zshrc"
 alias updatekitty="curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
 alias updatevencord="sh -c \"\$(curl -sS https://raw.githubusercontent.com/Vendicated/VencordInstaller/main/install.sh)\""
 alias updatemirrors="sudo reflector --save /etc/pacman.d/mirrorlist --protocol https --country India --latest 5 --sort age --fastest 5"
+
+# System cleaning aliases
+alias cleanup='paru -Sc --noconfirm; paru -Rns $(paru -Qtdq) 2>/dev/null; rm -rf ~/.cache/*; sudo journalctl --vacuum-size=50M; echo "Cleanup complete!"'
+alias deepclean='paru -Scc --noconfirm; paru -Rns $(paru -Qtdq) 2>/dev/null; rm -rf ~/.cache/*; sudo journalctl --vacuum-time=1d; docker system prune -af --volumes 2>/dev/null; echo "Deep clean complete!"'
+alias orphans='paru -Qtdq'
+alias rmorphans='paru -Rns $(paru -Qtdq)'
+alias paccache='echo "Pacman cache:" && du -sh /var/cache/pacman/pkg/ 2>/dev/null && echo "Paru cache:" && du -sh ~/.cache/paru 2>/dev/null'
+alias clearlogs='sudo journalctl --vacuum-size=50M'
+alias dockerclean='docker system prune -af --volumes'
+alias cachestats='echo "Pacman cache:" && du -sh /var/cache/pacman/pkg/ 2>/dev/null && echo "Paru cache:" && du -sh ~/.cache/paru 2>/dev/null && echo "User cache:" && du -sh ~/.cache 2>/dev/null && echo "Journal logs:" && journalctl --disk-usage'
 
 alias forgetwifi="sudo $HOME/.config/zsh/forget_wifi.sh"
 
@@ -159,17 +169,22 @@ alias clock="tty-clock -c -s -S -B -C 2"
 alias tmux="tmux -u"
 alias matrix="cmatrix"
 alias neofetch="fastfetch"
+alias cc="claude"
 
 alias ascap="cd ~/Code/ascap_scraper/ && source venv/bin/activate && python main.py && deactivate && cd"
 alias wifi="cd ~/Code && python3 vitlogin.py && cd"
 alias ytdlpbest='yt-dlp -f "bv*+ba/b" --merge-output-format mp4 --embed-metadata --embed-thumbnail --add-metadata'
 
 alias psql="docker exec -it postgres-db-1 psql"
+alias pg_dump="docker exec -it postgres-db-1 pg_dump"
+
 
 alias dcu="docker compose up -d"
 alias dcd="docker compose down"
 alias dcl="docker compose logs -f"
 alias dcr="docker compose restart"
+alias dps="docker ps --format "table {{.Image}}\t{{.Status}}\t{{.Ports}}""
+alias dcrr="docker compose run --rm"
 
 bgr() {
    python3 $HOME/.config/zsh/random_wallpaper.py
@@ -224,3 +239,6 @@ fi
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+alias npx="bunx"
+
+export TESSDATA_PREFIX=/usr/share/tessdata

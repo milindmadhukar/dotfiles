@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Get CPU usage
+cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1)
+
+# Get CPU temperature
+cpu_temp=$(sensors k10temp-pci-00c3 2>/dev/null | grep Tctl | awk '{print $2}' | sed 's/+//;s/°C//')
+
+# Get individual core info
+tooltip="CPU Temperature: ${cpu_temp}°C\n\n"
+core_num=0
+while IFS= read -r freq_line; do
+    freq=$(echo "$freq_line" | awk '{printf "%.0f", $4}')
+    if [ $core_num -lt 16 ]; then
+        tooltip+="Core ${core_num}: ${freq} MHz\n"
+    fi
+    core_num=$((core_num + 1))
+done < <(grep "cpu MHz" /proc/cpuinfo)
+
+# Output JSON for waybar
+printf '{"text":" %.0f%%", "tooltip":"%b", "class":"cpu"}' "$cpu_usage" "$tooltip"

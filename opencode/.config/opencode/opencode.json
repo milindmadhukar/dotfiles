@@ -1,5 +1,15 @@
 {
-  "formatter": {
-    "packageManager": "bun"
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "linear": {
+      "enabled": false,
+      "type": "remote",
+      "url": "https://mcp.linear.app/mcp"
+    },
+    "curius": {
+      "enabled": false,
+      "type": "remote",
+      "url": "https://curius.grasslabs.dev/api/mcp"
+    },
   }
 }

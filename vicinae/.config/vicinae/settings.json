@@ -20,6 +20,9 @@
          "name": "catppuccin-mocha"
       }
    },
+   "telemetry": {
+      "system_info": false
+   },
    "favorites": [
       "@marky/store.raycast.world-clock:index",
       "clipboard:history"

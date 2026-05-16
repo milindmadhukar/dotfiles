@@ -1,0 +1,100 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import argparse
+import fnmatch
+from pathlib import Path
+from zipfile import ZIP_DEFLATED, ZipFile
+
+
+def load_gitignore_patterns(folder: Path) -> list[str]:
+    gitignore = folder / ".gitignore"
+    if not gitignore.exists():
+        return []
+
+    patterns: list[str] = []
+    for raw in gitignore.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("/"):
+            line = line.lstrip("/")
+        patterns.append(line)
+    return patterns
+
+
+def is_ignored(rel_path: str, patterns: list[str]) -> bool:
+    name = rel_path.rsplit("/", 1)[-1]
+
+    for pattern in patterns:
+        if pattern.endswith("/"):
+            dirname = pattern.rstrip("/")
+            if (
+                name == dirname
+                or rel_path == dirname
+                or rel_path.startswith(dirname + "/")
+                or f"/{dirname}/" in f"/{rel_path}/"
+            ):
+                return True
+            continue
+
+        if any(ch in pattern for ch in "*?["):
+            if fnmatch.fnmatch(name, pattern) or fnmatch.fnmatch(rel_path, pattern):
+                return True
+            continue
+
+        if name == pattern or rel_path == pattern or rel_path.startswith(pattern + "/"):
+            return True
+
+    return False
+
+
+def zip_folder(folder: Path, output: Path | None) -> Path:
+    folder = folder.resolve()
+    if not folder.is_dir():
+        raise NotADirectoryError(f"Not a folder: {folder}")
+
+    target = output.resolve() if output else folder.parent / f"{folder.name}.zip"
+    patterns = load_gitignore_patterns(folder)
+
+    if target.exists():
+        target.unlink()
+
+    with ZipFile(target, "w", ZIP_DEFLATED) as archive:
+        for path in folder.rglob("*"):
+            rel = path.relative_to(folder).as_posix()
+            if is_ignored(rel, patterns):
+                continue
+
+            arcname = f"{folder.name}/{rel}"
+            if path.is_dir():
+                archive.writestr(arcname + "/", "")
+            else:
+                archive.write(path, arcname)
+
+    return target
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Zip a folder while excluding entries from its .gitignore"
+    )
+    parser.add_argument("folder", help="Folder to zip")
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="Output zip path (default: <folder_parent>/<folder_name>.zip)",
+    )
+    args = parser.parse_args()
+
+    folder = Path(args.folder).expanduser()
+    output = Path(args.output).expanduser() if args.output else None
+
+    zip_path = zip_folder(folder, output)
+    print(zip_path)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
